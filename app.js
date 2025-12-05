@@ -18,3 +18,10 @@ addTaskButton.addEventListener('click', function() {
     taskList.appendChild(newListEl);
     userInput.value = '';
 });
+
+// Добавление таска в лист по нажатию Enter
+userInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        addTaskButton.click();
+    }
+});
