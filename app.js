@@ -14,6 +14,11 @@ addTaskButton.addEventListener('click', function() {
     }
 
     const newListEl = document.createElement('li');
+
+    newListEl.addEventListener('click', function() {
+        newListEl.remove()
+    });
+    
     newListEl.textContent = inputText;
     taskList.appendChild(newListEl);
     userInput.value = '';
