@@ -1,0 +1,20 @@
+'use strict';
+
+const userInput = document.getElementById('user-input');
+const addTaskButton = document.getElementById('add-task-button');
+const taskList = document.getElementById('task-list');
+
+// Добавление таска в лист по нажатию кнопки
+addTaskButton.addEventListener('click', function() {
+    const inputText = userInput.value.trim();
+    
+    if (inputText === '') {
+        console.log('empty string');
+        return;
+    }
+
+    const newListEl = document.createElement('li');
+    newListEl.textContent = inputText;
+    taskList.appendChild(newListEl);
+    userInput.value = '';
+});
