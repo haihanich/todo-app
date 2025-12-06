@@ -14,6 +14,12 @@ addTaskButton.addEventListener('click', function() {
     }
 
     const newListEl = document.createElement('li');
+
+    // Помечаем таск выполненным
+    newListEl.addEventListener('click', function() {
+        newListEl.classList.toggle('done');
+    });
+    
     newListEl.textContent = inputText;
     taskList.appendChild(newListEl);
     userInput.value = '';

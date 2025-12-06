@@ -46,3 +46,8 @@ li {
     background-color: bisque;
     border-radius: 5px;
 }
+
+.done {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
