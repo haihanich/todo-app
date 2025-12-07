@@ -23,6 +23,10 @@ addTaskButton.addEventListener('click', function() {
     // Удаляем таск
     newListEl.addEventListener('contextmenu', function(event) {
         event.preventDefault();
+        const shouldDelete = confirm('r u sure?');
+        if (shouldDelete === false) {
+            return;
+        }
         newListEl.remove();
     })
     
