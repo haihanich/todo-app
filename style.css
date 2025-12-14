@@ -1,53 +1,161 @@
+/* ===== Base reset ===== */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0b1020;
+  --card: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.14);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+  --accent: #7c5cff;
+  --danger: #ff4d6d;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: sans-serif;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 500px at 10% 10%, rgba(124, 92, 255, 0.35), transparent 55%),
+    radial-gradient(900px 400px at 90% 20%, rgba(255, 77, 109, 0.25), transparent 60%),
+    radial-gradient(1000px 600px at 50% 100%, rgba(0, 220, 255, 0.18), transparent 60%),
+    var(--bg);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 48px 16px;
 }
 
+/* ===== Title ===== */
 .main-header {
-    margin-top: 20px;
-    font-weight: 100;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
 }
 
+/* ===== Make input + button look like a block ===== */
+.user-input,
+.add-task-button,
+.task-list {
+  width: min(560px, 92vw);
+}
+
+/* Input */
 .user-input {
-    width: 300px;
-    padding: 5px;
-    border-radius: 5px;
-    margin-top: 35px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 14px 14px;
+  outline: none;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  margin-bottom: 12px;
 }
 
+.user-input::placeholder {
+  color: var(--muted);
+}
+
+.user-input:focus {
+  border-color: rgba(124, 92, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.22), var(--shadow);
+}
+
+/* Button */
 .add-task-button {
-    width: 100px;
-    padding: 5px;
-    border-radius: 5px;
-    margin-top: 15px;
-    cursor: pointer;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 1), rgba(124, 92, 255, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  border-radius: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, filter 0.12s ease, opacity 0.12s ease;
+  margin-bottom: 22px;
+  font-weight: 600;
 }
 
 .add-task-button:hover {
-    background-color: aquamarine;
+  filter: brightness(1.05);
+  transform: translateY(-1px);
 }
 
+.add-task-button:active {
+  transform: translateY(0px);
+  opacity: 0.92;
+}
+
+/* ===== List ===== */
 .task-list {
-    list-style: none;
-    margin-top: 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-li {
-    padding: 5px;
-    margin-bottom: 10px;
-    background-color: bisque;
-    border-radius: 5px;
+/* Each task item */
+.task-list li {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  transition: transform 0.12s ease, border-color 0.12s ease, opacity 0.12s ease;
+  user-select: none;
 }
 
-.done {
-    text-decoration: line-through;
-    opacity: 0.5;
+.task-list li:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Done state */
+.task-list li.done {
+  opacity: 0.75;
+  border-color: rgba(124, 92, 255, 0.35);
+}
+
+.task-list li.done::before {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 10px;
+  border-radius: 999px;
+  background: rgba(124, 92, 255, 0.18);
+  border: 1px solid rgba(124, 92, 255, 0.35);
+  flex: 0 0 auto;
+}
+
+.task-list li.done {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Optional: small hint text under the button if you ever add it */
+.hint {
+  width: min(560px, 92vw);
+  color: var(--muted);
+  font-size: 13px;
 }
