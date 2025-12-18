@@ -6,6 +6,17 @@ const taskList = document.getElementById('task-list');
 
 let tasks = [];
 
+function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const storedTasks = localStorage.getItem('tasks');
+    if (!storedTasks) return;
+
+    tasks = JSON.parse(storedTasks);
+}
+
 function renderTasks() {
     taskList.innerHTML = '';
     for (const task of tasks) {
@@ -15,15 +26,16 @@ function renderTasks() {
 
         if (task.done) {
             newListEl.classList.add('done');
-        };
+        }
 
         // Помечаем таск выполненным
         newListEl.addEventListener('click', function (event) {
             const currentTask = tasks.find(task => task.id === Number(event.currentTarget.dataset.id));
-            if (currentTask === undefined) {
-                return;
-            }
+            if (currentTask === undefined) return;
+
             currentTask.done = !currentTask.done;
+
+            saveTasks();
             renderTasks();
         });
 
@@ -37,13 +49,16 @@ function renderTasks() {
             const idToDelete = Number(event.currentTarget.dataset.id);
             tasks = tasks.filter(task => task.id !== idToDelete);
 
+            saveTasks();
             renderTasks();
         });
 
-
         taskList.appendChild(newListEl);
-    };
-};
+    }
+}
+
+loadTasks();
+renderTasks();
 
 // Добавление таска в лист по нажатию кнопки
 addTaskButton.addEventListener('click', function () {
@@ -59,8 +74,10 @@ addTaskButton.addEventListener('click', function () {
         text: inputText,
         done: false
     };
+
     tasks.push(newTask);
 
+    saveTasks();
     renderTasks();
 
     userInput.value = '';
