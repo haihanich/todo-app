@@ -6,6 +6,7 @@ const taskList = document.getElementById('task-list');
 
 let tasks = [];
 
+/* ===== LocalStorage helpers ===== */
 function saveTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
@@ -17,8 +18,20 @@ function loadTasks() {
     tasks = JSON.parse(storedTasks);
 }
 
+/* ===== Small helpers (refactor) ===== */
+function syncUI() {
+    saveTasks();
+    renderTasks();
+}
+
+function getTaskId(event) {
+    return Number(event.currentTarget.dataset.id);
+}
+
+/* ===== Render ===== */
 function renderTasks() {
     taskList.innerHTML = '';
+
     for (const task of tasks) {
         const newListEl = document.createElement('li');
         newListEl.textContent = task.text;
@@ -28,39 +41,40 @@ function renderTasks() {
             newListEl.classList.add('done');
         }
 
-        // Помечаем таск выполненным
+        // Toggle done
         newListEl.addEventListener('click', function (event) {
-            const currentTask = tasks.find(task => task.id === Number(event.currentTarget.dataset.id));
-            if (currentTask === undefined) return;
+            const id = getTaskId(event);
+            const currentTask = tasks.find(task => task.id === id);
+            if (!currentTask) return;
 
             currentTask.done = !currentTask.done;
-
-            saveTasks();
-            renderTasks();
+            syncUI();
         });
 
-        // Удаляем таск
+        // Delete on right-click
         newListEl.addEventListener('contextmenu', function (event) {
             event.preventDefault();
 
             const shouldDelete = confirm('r u sure?');
             if (!shouldDelete) return;
 
-            const idToDelete = Number(event.currentTarget.dataset.id);
-            tasks = tasks.filter(task => task.id !== idToDelete);
+            const id = getTaskId(event);
+            tasks = tasks.filter(task => task.id !== id);
 
-            saveTasks();
-            renderTasks();
+            syncUI();
         });
 
         taskList.appendChild(newListEl);
     }
 }
 
+/* ===== Init ===== */
 loadTasks();
 renderTasks();
 
-// Добавление таска в лист по нажатию кнопки
+/* ===== Events ===== */
+
+// Add task by button
 addTaskButton.addEventListener('click', function () {
     const inputText = userInput.value.trim();
 
@@ -76,14 +90,12 @@ addTaskButton.addEventListener('click', function () {
     };
 
     tasks.push(newTask);
-
-    saveTasks();
-    renderTasks();
+    syncUI();
 
     userInput.value = '';
 });
 
-// Добавление таска в лист по нажатию Enter
+// Add task by Enter
 userInput.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
         addTaskButton.click();
